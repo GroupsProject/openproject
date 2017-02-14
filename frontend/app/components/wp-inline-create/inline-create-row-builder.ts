@@ -10,10 +10,11 @@ import {WorkPackageTableSelection} from '../wp-fast-table/state/wp-table-selecti
 import {CellBuilder} from '../wp-fast-table/builders/cell-builder';
 import {DetailsLinkBuilder} from '../wp-fast-table/builders/details-link-builder';
 import {
-  internalColumnDetails,
+  internalDetailsColumn,
   rowClassName,
   SingleRowBuilder
 } from '../wp-fast-table/builders/rows/single-row-builder';
+import {QueryColumn} from '../api/api-v3/hal-resources/query-resource.service';
 
 export const inlineCreateRowClassName = 'wp-inline-create-row';
 export const inlineCreateCancelClassName = 'wp-table--cancel-create-link';
@@ -35,13 +36,13 @@ export class InlineCreateRowBuilder extends SingleRowBuilder {
     };
   }
 
-  public buildCell(workPackage:WorkPackageResource, column:string, row:HTMLElement):void {
-    switch (column) {
-      case internalColumnDetails:
+  public buildCell(workPackage:WorkPackageResource, column:QueryColumn, row:HTMLElement):void {
+    switch (column.id) {
+      case internalDetailsColumn.id:
         this.buildCancelButton(row);
         break;
       default:
-        const cell = this.cellBuilder.build(workPackage, column);
+        const cell = this.cellBuilder.build(workPackage, column.id);
         row.appendChild(cell);
     }
 

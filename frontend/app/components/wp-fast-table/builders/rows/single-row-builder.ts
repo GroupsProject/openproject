@@ -11,7 +11,9 @@ import {rowId} from '../../helpers/wp-table-row-helpers';
 
 export const rowClassName = 'wp-table--row';
 
-export const internalColumnDetails = '__internal-detailsLink';
+export const internalDetailsColumn = {
+  id: '__internal-detailsLink'
+} as QueryColumn;
 
 export class SingleRowBuilder {
   // Injections
@@ -35,16 +37,16 @@ export class SingleRowBuilder {
   public get columns():string[] {
     const editColums = (this.states.table.columns.getCurrentValue() || []);
 
-    return editColums.concat(internalColumnDetails);
+    return editColums.concat(internalDetailsColumn);
   }
 
   public buildCell(workPackage:WorkPackageResource, column:string, row:HTMLElement):void {
-    switch (column) {
-      case internalColumnDetails:
+    switch (column.id) {
+      case internalColumnDetails.id:
         this.detailsLinkBuilder.build(workPackage, row);
         break;
       default:
-        const cell = this.cellBuilder.build(workPackage, column);
+        const cell = this.cellBuilder.build(workPackage, column.id);
         row.appendChild(cell);
     }
 
