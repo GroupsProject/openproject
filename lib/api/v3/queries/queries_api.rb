@@ -90,7 +90,12 @@ module API
 
           namespace 'form' do
             post do
+              query = Query.new_default(name: 'default',
+                                        user: current_user)
 
+              status 200
+              FormRepresenter.new(query,
+                                  current_user: current_user)
             end
           end
 
