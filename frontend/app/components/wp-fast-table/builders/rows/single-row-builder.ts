@@ -6,6 +6,7 @@ import {CellBuilder} from '../cell-builder';
 import {DetailsLinkBuilder} from '../details-link-builder';
 import {injectorBridge} from '../../../angular/angular-injector-bridge.functions';
 import {WorkPackageResource} from '../../../api/api-v3/hal-resources/work-package-resource.service';
+import {QueryColumn} from '../../../api/api-v3/hal-resources/query-resource.service';
 import {checkedClassName} from '../ui-state-link-builder';
 import {rowId} from '../../helpers/wp-table-row-helpers';
 
@@ -34,22 +35,21 @@ export class SingleRowBuilder {
    * Returns a shortcut to the current column state.
    * It is not responsible for subscribing to updates.
    */
-  public get columns():string[] {
+  public get columns():QueryColumn[] {
     const editColums = (this.states.table.columns.getCurrentValue() || []);
 
     return editColums.concat(internalDetailsColumn);
   }
 
-  public buildCell(workPackage:WorkPackageResource, column:string, row:HTMLElement):void {
+  public buildCell(workPackage:WorkPackageResource, column:QueryColumn, row:HTMLElement):void {
     switch (column.id) {
-      case internalColumnDetails.id:
+      case internalDetailsColumn.id:
         this.detailsLinkBuilder.build(workPackage, row);
         break;
       default:
         const cell = this.cellBuilder.build(workPackage, column.id);
         row.appendChild(cell);
     }
-
   }
 
   /**
@@ -58,7 +58,7 @@ export class SingleRowBuilder {
   public buildEmpty(workPackage:WorkPackageResource):HTMLElement {
     let row = this.createEmptyRow(workPackage);
 
-    this.columns.forEach((column:string) => {
+    this.columns.forEach((column:QueryColumn) => {
       this.buildCell(workPackage, column, row);
     });
 
@@ -83,7 +83,6 @@ export class SingleRowBuilder {
 
     return tr;
   }
-
 }
 
 

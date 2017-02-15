@@ -7,7 +7,7 @@ import {
 } from './wp-fast-table/wp-table.interfaces';
 import {MultiState, initStates, State} from "../helpers/reactive-fassade";
 import {WorkPackageResource} from "./api/api-v3/hal-resources/work-package-resource.service";
-import {QueryResource} from "./api/api-v3/hal-resources/query-resource.service";
+import {QueryResource, QueryColumn} from "./api/api-v3/hal-resources/query-resource.service";
 import {opServicesModule} from "../angular-modules";
 import {SchemaResource} from './api/api-v3/hal-resources/schema-resource.service';
 import {WorkPackageEditForm} from './wp-edit-form/work-package-edit-form';
@@ -29,7 +29,8 @@ export class States {
     // Set of work package IDs in strict order of appearance
     rows: new State<WorkPackageResource[]>(),
     // Set of columns in strict order of appearance
-    columns: new State<string[]>(),
+    // TODO: change to proper column
+    columns: new State<QueryColumn[]>(),
     // Table row selection state
     selection: new State<WPTableRowSelectionState>(),
     // Current state of collapsed groups (if any)
@@ -45,7 +46,7 @@ export class States {
   // Query states
   query = {
     // All available columns for selection
-    availableColumns: new State<any[]>()
+    availableColumns: new State<QueryColumn[]>()
   };
 
   // Current focused work package (e.g, row preselected for details button)
