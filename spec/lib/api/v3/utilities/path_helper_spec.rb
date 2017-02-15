@@ -248,6 +248,12 @@ describe ::API::V3::Utilities::PathHelper do
     it_behaves_like 'api v3 path', '/projects/42/queries/default'
   end
 
+  describe '#query_form' do
+    subject { helper.query_form }
+
+    it_behaves_like 'api v3 path', '/queries/form'
+  end
+
   describe '#query_star' do
     subject { helper.query_star 1 }
 
