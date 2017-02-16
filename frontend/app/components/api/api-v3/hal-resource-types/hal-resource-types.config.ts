@@ -62,7 +62,8 @@ function halResourceTypesConfig(halResourceTypes:HalResourceTypesService) {
     User: 'UserResource',
     Collection: 'CollectionResource',
     WorkPackageCollection: 'WorkPackageCollectionResource',
-    Query: 'QueryResource'
+    Query: 'QueryResource',
+    Form: 'FormResource'
   });
 }
 
