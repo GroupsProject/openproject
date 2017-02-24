@@ -40,6 +40,8 @@ class PlanningElementTypeColorsController < ApplicationController
 
   menu_item :colors
 
+  include ActionView::Helpers::UrlHelper
+
   def index
     @colors = PlanningElementTypeColor.all
     respond_to do |format|
@@ -120,7 +122,11 @@ class PlanningElementTypeColorsController < ApplicationController
   protected
 
   def default_breadcrumb
-    l('timelines.admin_menu.colors')
+    if current_page?(colors_path)
+      t('timelines.admin_menu.colors')
+    else
+      link_to(t('timelines.admin_menu.colors'), colors_path)
+    end
   end
 
   def require_admin_unless_readonly_api_request

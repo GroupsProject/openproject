@@ -34,6 +34,8 @@ class StatusesController < ApplicationController
 
   before_action :require_admin
 
+  include ActionView::Helpers::UrlHelper
+
   verify method: :get, only: :index, render: { nothing: true, status: :method_not_allowed }
   def index
     @statuses = Status.page(params[:page])
@@ -98,5 +100,15 @@ class StatusesController < ApplicationController
       flash[:error] =  l(:error_work_package_done_ratios_not_updated)
     end
     redirect_to action: 'index'
+  end
+
+  protected
+
+  def default_breadcrumb
+    if current_page?(statuses_path)
+      t(:label_work_package_status_plural)
+    else
+      link_to(t(:label_work_package_status_plural), statuses_path)
+    end
   end
 end

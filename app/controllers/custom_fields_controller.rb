@@ -35,6 +35,8 @@ class CustomFieldsController < ApplicationController
   before_action :find_custom_field, only: [:edit, :update, :destroy, :move]
   before_action :blank_translation_attributes_as_nil, only: [:create, :update]
 
+  include ActionView::Helpers::UrlHelper
+
   def index
     @custom_fields_by_type = CustomField.includes(:translations).group_by { |f| f.class.name }
     @tab = params[:tab] || 'WorkPackageCustomField'
@@ -116,5 +118,15 @@ class CustomFieldsController < ApplicationController
 
   def find_types
     @types = ::Type.order('position')
+  end
+
+  protected
+
+  def default_breadcrumb
+    if current_page?(custom_fields_path)
+      t('label_custom_field_plural')
+    else
+      link_to(t('label_custom_field_plural'), custom_fields_path)
+    end
   end
 end

@@ -35,6 +35,8 @@ class GroupsController < ApplicationController
                                     :show, :create_memberships, :destroy_membership,
                                     :edit_membership]
 
+  include ActionView::Helpers::UrlHelper
+
   # GET /groups
   # GET /groups.xml
   def index
@@ -167,5 +169,13 @@ class GroupsController < ApplicationController
 
   def find_group
     @group = Group.find(params[:id])
+  end
+
+  def default_breadcrumb
+    if current_page?(groups_path)
+      t('label_group_plural')
+    else
+      link_to(t('label_group_plural'), groups_path)
+    end
   end
 end

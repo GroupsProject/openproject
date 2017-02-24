@@ -34,6 +34,7 @@ class EnumerationsController < ApplicationController
   before_action :find_enumeration, only: [:edit, :update, :destroy]
 
   include CustomFieldsHelper
+  include ActionView::Helpers::UrlHelper
 
   def index; end
 
@@ -94,7 +95,11 @@ class EnumerationsController < ApplicationController
   protected
 
   def default_breadcrumb
-    l(:label_enumerations)
+    if current_page?(enumerations_path)
+      t(:label_enumerations)
+    else
+      link_to(t(:label_enumerations), enumerations_path)
+    end
   end
 
   def find_enumeration

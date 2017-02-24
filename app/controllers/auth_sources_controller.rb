@@ -34,6 +34,8 @@ class AuthSourcesController < ApplicationController
   before_action :require_admin
   before_action :block_if_password_login_disabled
 
+  include ActionView::Helpers::UrlHelper
+
   def index
     @auth_sources = AuthSource.page(params[:page])
                     .per_page(per_page_param)
@@ -104,7 +106,11 @@ class AuthSourcesController < ApplicationController
   end
 
   def default_breadcrumb
-    l(:label_auth_source_plural)
+    if current_page?(ldap_auth_sources_path)
+      t(:label_auth_source_plural)
+    else
+      link_to(t(:label_auth_source_plural), ldap_auth_sources_path)
+    end
   end
 
   def block_if_password_login_disabled

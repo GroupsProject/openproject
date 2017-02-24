@@ -34,6 +34,8 @@ class RolesController < ApplicationController
 
   before_action :require_admin, except: [:autocomplete_for_role]
 
+  include ActionView::Helpers::UrlHelper
+
   def index
     @roles = Role.order('builtin, position')
              .page(page_param)
@@ -134,5 +136,15 @@ class RolesController < ApplicationController
 
   def notify_changed_roles(action, changed_role)
     OpenProject::Notifications.send(:roles_changed, action: action, role: changed_role)
+  end
+
+  protected
+
+  def default_breadcrumb
+    if current_page?(roles_path)
+      t('label_role_plural')
+    else
+      link_to(t('label_role_plural'), roles_path)
+    end
   end
 end

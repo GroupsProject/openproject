@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   include SortHelper
   include CustomFieldsHelper
   include PaginationHelper
+  include ActionView::Helpers::UrlHelper
 
   def index
     @groups = Group.all.sort
@@ -295,5 +296,15 @@ class UsersController < ApplicationController
 
   def set_password?(params)
     params[:user][:password].present? && !OpenProject::Configuration.disable_password_choice?
+  end
+
+  protected
+
+  def default_breadcrumb
+    if current_page?(users_path)
+      t('label_user_plural')
+    else
+      link_to(t('label_user_plural'), users_path)
+    end
   end
 end

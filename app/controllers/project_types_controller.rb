@@ -37,6 +37,8 @@ class ProjectTypesController < ApplicationController
   helper :timelines
   layout 'admin'
 
+  include ActionView::Helpers::UrlHelper
+
   def index
     @project_types = ProjectType.all
     respond_to do |format|
@@ -114,7 +116,11 @@ class ProjectTypesController < ApplicationController
   protected
 
   def default_breadcrumb
-    l('timelines.admin_menu.project_types')
+    if current_page?(project_types_path)
+      t('timelines.admin_menu.project_types')
+    else
+      link_to(t('timelines.admin_menu.project_types'), project_types_path)
+    end
   end
 
   def check_permissions
