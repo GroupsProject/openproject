@@ -62,8 +62,19 @@ function halResourceTypesConfig(halResourceTypes:HalResourceTypesService) {
     User: 'UserResource',
     Collection: 'CollectionResource',
     WorkPackageCollection: 'WorkPackageCollectionResource',
-    Query: 'QueryResource',
-    Form: 'FormResource'
+    Query: {
+      className: 'QueryResource',
+      attrTypes: {
+      }
+    },
+    Form: 'FormResource',
+    QueryFilterInstance: {
+     className: 'QueryFilterInstanceResource' ,
+     attrTypes: {
+       schema: 'QueryFilterInstanceSchema'
+     }
+    },
+    QueryFilterInstanceSchema: 'QueryFilterInstanceSchemaResource'
   });
 }
 
