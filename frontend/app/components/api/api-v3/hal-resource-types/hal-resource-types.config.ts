@@ -58,6 +58,7 @@ function halResourceTypesConfig(halResourceTypes:HalResourceTypesService) {
       }
     },
     Schema: 'SchemaResource',
+    SchemaDependency: 'SchemaDependencyResource',
     Error: 'ErrorResource',
     User: 'UserResource',
     Collection: 'CollectionResource',
