@@ -112,6 +112,18 @@ module API
           }
         end
 
+        link :update do
+          href = if represented.project
+                   # TODO: implement
+                 else
+                   api_v3_paths.query_form
+                 end
+          {
+            href: href,
+            method: :post
+          }
+        end
+
         linked_property :user
         linked_property :project
 

@@ -38,12 +38,15 @@ module API
     module Queries
       module Schemas
         class QueryFilterInstanceSchemaRepresenter < ::API::Decorators::SchemaRepresenter
-          link :filter do
-            {
-              href: api_v3_paths.query_filter(convert_attribute(filter.name)),
-              title: filter.human_name
-            }
-          end
+          # TODO: remove as it serves no purpose after all
+          # Double check if this can then be a simple "Schema"
+          #
+#          link :filter do
+#            {
+#              href: api_v3_paths.query_filter(convert_attribute(filter.name)),
+#              title: filter.human_name
+#            }
+#          end
 
           schema :name,
                  type: 'String',
@@ -52,14 +55,54 @@ module API
                  required: true,
                  visibility: false
 
-          schema_with_allowed_link :filter,
-                                   type: 'QueryFilter',
-                                   required: true,
-                                   writable: true,
-                                   visibility: false,
-                                   href_callback: ->(*) {
-                                     api_v3_paths.query_filter(convert_attribute(filter.name))
-                                   }
+          def self.filter_representer
+            ::API::V3::Queries::Filters::QueryFilterRepresenter
+          end
+
+          def self.filter_link_factory
+            ->(*) do
+              {
+                href: api_v3_paths.query_filter(convert_attribute(filter.name)),
+                title: filter.human_name
+              }
+            end
+          end
+
+          schema_with_allowed_collection :filter,
+                                         type: 'QueryFilter',
+                                         required: true,
+                                         writable: true,
+                                         visibility: false,
+                                         values_callback: -> {
+                                           [filter]
+                                         },
+                                         value_representer: filter_representer,
+                                         link_factory: filter_link_factory
+
+          def self.operator_representer
+            ::API::V3::Queries::Operators::QueryOperatorRepresenter
+          end
+
+          def self.operator_link_factory
+            ->(operator) do
+              {
+                href: api_v3_paths.query_operator(operator),
+                title: I18n.t(::Queries::BaseFilter.operators[operator.to_sym])
+              }
+            end
+          end
+
+          schema_with_allowed_collection :operator,
+                                         type: 'QueryOperator',
+                                         writable: true,
+                                         has_default: false,
+                                         required: true,
+                                         visibility: false,
+                                         values_callback: -> {
+                                           filter.available_operators
+                                         },
+                                         value_representer: operator_representer,
+                                         link_factory: operator_link_factory
 
           # While this is not actually the represented class,
           # this is what the superclass expects in order to have the
