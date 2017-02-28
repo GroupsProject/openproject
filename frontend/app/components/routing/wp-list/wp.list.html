@@ -7,7 +7,7 @@
         transition-method="loadQuery">
     </selectable-title>
 
-    <ul class="toolbar-items">
+    <ul class="toolbar-items" ng-if="query">
       <li class="toolbar-item">
         <wp-create-button
             allowed="!!resource.$links.createWorkPackage"
