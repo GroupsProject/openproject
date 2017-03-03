@@ -67,7 +67,7 @@ function getWebpackVendorsConfig() {
       modules: ['node_modules'],
       alias: {
         'at.js': path.resolve(__dirname, 'vendor', 'at.js'),
-        'select2': path.resolve(__dirname, 'vendor', 'select2'),
+        'select2': path.resolve(__dirname, 'vendor', 'select2')
       }
     },
 

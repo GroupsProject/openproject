@@ -39,6 +39,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var mode = (process.env['RAILS_ENV'] || 'production').toLowerCase();
 var production = (mode !== 'development');
 var debug_output = (!production || !!process.env['OP_FRONTEND_DEBUG_OUTPUT']);
+var dll_manifest = require('./dist/vendors-dll-manifest.json');
 
 var node_root = path.resolve(__dirname, 'node_modules');
 
@@ -225,7 +226,7 @@ function getWebpackMainConfig() {
       // Reference the vendors bundle
       new webpack.DllReferencePlugin({
           context: path.resolve(__dirname),
-          manifest: require('./dist/vendors-dll-manifest.json')
+          manifest: dll_manifest
       }),
 
       // Extract CSS into its own bundle
